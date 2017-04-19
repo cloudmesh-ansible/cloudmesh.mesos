@@ -1,0 +1,36 @@
+---
+- hosts: mesos-master #comment: mesos is the group name we just defined
+  become: yes #comment: this operation needs privilege access
+  tasks:
+    - name: remove earlier versions # text description
+      shell: rm -rf ./*
+    - name: download mesos # text description
+      shell: wget http://www.apache.org/dist/mesos/1.2.0/mesos-1.2.0.tar.gz
+    - name: unzip mesos # text description
+      shell: tar -zxf mesos-1.2.0.tar.gz
+    - name: Update the packages
+      shell: sudo apt-get update
+    - name: Install a few utility tools # text description
+      shell: sudo apt-get install -y tar wget git
+    - name: Install the latest OpenJDK # text description
+      shell: sudo apt-get install -y openjdk-7-jdk
+    - name: Install other Mesos dependencies # text description
+      shell: sudo apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev
+    - name: Change working directory # text description
+      shell: mkdir /home/cc/mesos-1.2.0/build
+    - name: Go to build directory# text description
+      shell: /home/cc/mesos-1.2.0/configure
+    - name: Run make command  # text description
+      shell: make
+    - name: Run test suite # text description
+      shell: make check
+    - name: Install make # text description
+      shell: make install
+    - name: Start mesos master # text description
+      shell: sudo ./bin/mesos-master.sh --ip=127.0.0.1 --work_dir=/var/lib/mesos
+  
+      
+
+
+
+

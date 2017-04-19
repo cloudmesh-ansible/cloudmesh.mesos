@@ -1,0 +1,22 @@
+---
+- hosts: mesos #comment: mesos is the group name we just defined
+  become: yes #comment: this operation needs privilege access
+  tasks:
+     - name: print mesos downloads # text description
+      shell: echo 'its downloaded!!'
+    - name: download mesos # text description
+      shell: wget http://www.apache.org/dist/mesos/1.2.0/mesos-1.2.0.tar.gz
+    - name: unzip mesos # text description
+      shell: tar -zxf mesos-1.2.0.tar.gz
+    - name: Update the packages
+      shell: sudo apt-get update
+    - name: Install a few utility tools # text description
+      shell: sudo apt-get install -y tar wget git
+    - name: Install the latest OpenJDK # text description
+      shell: sudo apt-get install -y openjdk-7-jdk
+    - name: Install other Mesos dependencies # text description
+      shell: sudo apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev
+
+
+
+
