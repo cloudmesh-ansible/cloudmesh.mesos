@@ -1,0 +1,5 @@
+---
+# vars file for r_mesos
+
+build_dir: /home/cc/mesos-1.2.0/build/
+
