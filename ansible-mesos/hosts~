@@ -1,4 +1,0 @@
-[mesos]
-129.114.33.4 ansible_ssh_user=cc ansible_ssh_private_key="/home/ronak/.ssh/keys/rsa_id.pem"
-129.114.32.105 ansible_ssh_user=cc ansible_ssh_private_key="/home/ronak/.ssh/keys/rsa_id.pem"
-129.114.33.105 ansible_ssh_user=cc ansible_ssh_private_key="/home/ronak/.ssh/keys/rsa_id.pem"
