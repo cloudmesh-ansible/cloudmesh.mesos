@@ -11,9 +11,9 @@ class MesosCommand(PluginCommand):
         ::
 
           Usage:
-                command -f FILE
-                command FILE
-                command list
+                mesos -f FILE
+                mesos FILE
+                mesos list
 
           This command does some useful things.
 

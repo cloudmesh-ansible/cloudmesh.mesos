@@ -39,7 +39,7 @@ version = readfile("VERSION")[0].strip()
 readme = readfile('README.rst')
 
 NAME = "cloudmesh.mesos"
-DESCRIPTION = "A command to manage a mesos cluster"
+DESCRIPTION = "A command called mesos and foo for the cloudmesh shell"
 AUTHOR = "Gregor von Laszewski"
 AUTHOR_EMAIL = "laszewski@gmail.com"
 URL = "https://github.com/cloudmesh/cloudmesh.mesos"
