@@ -1,0 +1,5 @@
+---
+- hosts: mesos-master mesos-agents
+  remote_user: cc
+  roles:
+   - r_mesos
