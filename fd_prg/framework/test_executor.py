@@ -77,7 +77,7 @@ class MyExecutor(mesos.interface.Executor):
             url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml"
             resp = urllib2.urlopen(url, timeout=5)
             face_cascade = resp.read()
-            file = open("cascade.xml", 'w')
+            file = open(os.path.expanduser("~/cascade.xml"), 'w')
             file.write(face_cascade)
             file.close()
         except:
@@ -85,32 +85,33 @@ class MyExecutor(mesos.interface.Executor):
 
     def find_faces_img(self, url, name):
         image = self.url_to_image(url)
-        if not os.path.exists("cascade.xml"):
+        if not os.path.exists(os.path.expanduser("~/cascade.xml")):
             print "Writing cascade"
             self.write_cascade()
         if type(image) != bool:
             try:
-                face_cascade = cv2.CascadeClassifier("cascade.xml")
+                face_cascade = cv2.CascadeClassifier(os.path.expanduser("~/cascade.xml"))
                 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
                 faces = face_cascade.detectMultiScale(gray, 1.3, 5)
                 for (x, y, w, h) in faces:
                     image = cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                cv2.imwrite(name, image)
-                return True
+                    cv2.imwrite(name, image)
+                print len(faces)
+                return [True, len(faces)]
             except:
                 print "Error finding faces"
-                return False
+                return [False, 0]
         else:
-            return False
+            return [False, 0]
 
     def main_func(self):
         i = 0
         itr = 0
         no_images = 10
-        print "Started"
-        input_folder_name = "/home/vgg_face_dataset/files/"
+        result = ""
+        input_folder_name = os.path.expanduser("~/vgg_face_dataset/files/")
         fileList = os.listdir(input_folder_name)
-        output_folder_name = "/home/output/"
+        output_folder_name = os.path.expanduser("~/output/")
 
         if not os.path.exists(output_folder_name):
             os.makedirs(output_folder_name)
@@ -121,7 +122,7 @@ class MyExecutor(mesos.interface.Executor):
                 break
             itr += 1
 
-            print "Reading file" + file_name
+            print "Reading file::" + file_name
             with open(input_folder_name + file_name) as f:
                 content = f.readlines()
             k = 0
@@ -133,11 +134,16 @@ class MyExecutor(mesos.interface.Executor):
                 link = str.split(line)
                 if len(link) > 6:
                     print "Getting image from URL::" + link[1]
-                if self.find_faces_img(link[1], output_folder_name + file_name + link[0] + ".jpg"):
-                    i += 1
+                    head_count = self.find_faces_img(link[1], output_folder_name + file_name + link[0] + ".jpg")
+                    if head_count[0]:
+                        i += 1
+                        result += file_name + link[0] + " " + link[1] + " " + str(head_count[1]) + "\r\n"
         print sys.path[0]
-
-
+        file = open(os.path.expanduser("~/output/results.txt"), 'w')
+        file.write(result)
+        file.close()
+        os.remove(os.path.expanduser("~/cascade.xml"))
+                  
 if __name__ == "__main__":
     print "Starting executor"
     driver = mesos.native.MesosExecutorDriver(MyExecutor())
