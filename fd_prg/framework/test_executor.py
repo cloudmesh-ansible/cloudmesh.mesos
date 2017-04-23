@@ -23,6 +23,8 @@ import os
 import urllib2
 import numpy as np
 import cv2
+import shutil
+import zipfile
 
 import mesos.interface
 from mesos.interface import mesos_pb2
@@ -42,7 +44,10 @@ class MyExecutor(mesos.interface.Executor):
             driver.sendStatusUpdate(update)
 
             # This is where one would perform the requested task.
-            self.main_func()
+            try:
+                self.main_func(1)
+            except:
+                print "Error running face detection"
 
             print "Sending status update..."
             update = mesos_pb2.TaskStatus()
@@ -72,79 +77,148 @@ class MyExecutor(mesos.interface.Executor):
             print "Error reading from URL"
             return False
 
-    def write_cascade(self):
+    def write_cascade(self, global_path, url):
         try:
-            url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml"
+            print "Downloading cascade file"
+
             resp = urllib2.urlopen(url, timeout=5)
             face_cascade = resp.read()
-            file = open(os.path.expanduser("~/cascade.xml"), 'w')
-            file.write(face_cascade)
-            file.close()
+            print global_path + "cascade.xml"
+            cascade_file = open(global_path + "cascade.xml", 'w')
+            cascade_file.write(face_cascade)
+            cascade_file.close()
+            print "Downloaded cascade"
+            return True
         except:
-            print "Error reading cascade"
+            print "Error downloading cascade"
+            return False
 
-    def find_faces_img(self, url, name):
+    def find_faces_img(self, url, name, global_path):
         image = self.url_to_image(url)
-        if not os.path.exists(os.path.expanduser("~/cascade.xml")):
-            print "Writing cascade"
-            self.write_cascade()
+
         if type(image) != bool:
             try:
-                face_cascade = cv2.CascadeClassifier(os.path.expanduser("~/cascade.xml"))
+                face_cascade = cv2.CascadeClassifier(global_path + "cascade.xml")
                 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
                 faces = face_cascade.detectMultiScale(gray, 1.3, 5)
                 for (x, y, w, h) in faces:
                     image = cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                cv2.imwrite(name, image)
+                    cv2.imwrite(name, image)
                 print len(faces)
                 return [True, len(faces)]
             except:
-                print "Error finding faces"
+                print "Error finding faces in image"
                 return [False, 0]
         else:
             return [False, 0]
 
-    def main_func(self):
-        i = 0
-        itr = 0
-        no_images = 10
-        result = ""
-        input_folder_name = os.path.expanduser("~/vgg_face_dataset/files/")
-        fileList = os.listdir(input_folder_name)
-        output_folder_name = os.path.expanduser("~/output/")
+    def download_data_set(self, global_path, dataset, url):
+        try:
+            print "Downloading dataset"
 
+            resp = urllib2.urlopen(url, timeout=10)
+            downloaded_dataset = resp.read()
+            dataset_file = open(global_path + dataset + ".zip", 'wb')
+            dataset_file.write(downloaded_dataset)
+            dataset_file.close()
+            print "Dataset downloaded"
+            return True
+        except:
+            print "Error downloading dataset"
+            return False
+
+    def unzip_data(self, global_path, dataset):
+        try:
+            print "Unzipping dataset"
+            zip_ref = zipfile.ZipFile(global_path + dataset + '.zip', 'r')
+            zip_ref.extractall(global_path)
+            zip_ref.close()
+            os.remove(global_path + dataset + '.zip')
+            print "Unzipping complete"
+            return True
+        except:
+            print "Error unzipping data"
+            return False
+
+    def main_func(self, start_file):
+        start_time = time.time()
+        print "Start Time::" + str(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
+        dataset = "vgg_face_dataset"
+        global_path = os.path.expanduser("~/fd/")
+        dataset_url = "https://github.com/anurag2301/cloudmesh.mesos/raw/master/vgg_face_dataset.zip"
+        cascade_url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml"
+        no_images_per_file = 5
+        no_files = 10
+
+        if not os.path.exists(global_path):
+            os.makedirs(global_path)
+        itr = 1
+
+        result = ""
+        if self.download_data_set(global_path, dataset, dataset_url):
+            if not self.unzip_data(global_path, dataset):
+                return False
+
+        if not os.path.exists(global_path + "cascade.xml"):
+            if not self.write_cascade(global_path, cascade_url):
+                return False
+        input_folder_name = global_path + dataset + "/files/"
+        file_list = os.listdir(input_folder_name)
+        output_folder_name = global_path + "output/"
         if not os.path.exists(output_folder_name):
             os.makedirs(output_folder_name)
-        for file_name in fileList:
-            if i > no_images:
-                break
-            if itr > no_images:
+        for file_name in file_list:
+            if start_file > 1:
+                start_file -= 1
+                continue
+            if itr > no_files:
                 break
             itr += 1
-
             print "Reading file::" + file_name
             with open(input_folder_name + file_name) as f:
                 content = f.readlines()
-            k = 0
+                f.close()
+            img_no = 1
             for line in content:
-                k += 1
-                if k > 3:
+                if img_no > no_images_per_file:
                     break
-
                 link = str.split(line)
                 if len(link) > 6:
                     print "Getting image from URL::" + link[1]
-                    head_count = self.find_faces_img(link[1], output_folder_name + file_name + link[0] + ".jpg")
+                    head_count = self.find_faces_img(link[1], output_folder_name + file_name + link[0] + ".jpg",
+                                                     global_path)
                     if head_count[0]:
-                        i += 1
+                        img_no += 1
                         result += file_name + link[0] + " " + link[1] + " " + str(head_count[1]) + "\r\n"
-        print sys.path[0]
-        file = open(os.path.expanduser("~/output/results.txt"), 'w')
-        file.write(result)
-        file.close()
-        os.remove(os.path.expanduser("~/cascade.xml"))
-                  
+
+        end_time = time.time()
+        result = str(end_time - start_time) + "\r\n" + result
+        print "Writing results"
+        if os.path.exists(global_path + "output/results.txt"):
+            with open(global_path + "output/results.txt") as f:
+                content = f.readlines()
+                f.close()
+                result += "\r\n"
+                for line in content:
+                    result += line
+            os.remove(global_path + "output/results.txt")
+        result_file = open(global_path + "output/results.txt", 'w')
+        result_file.write(result)
+        result_file.close()
+
+        # Removing dataset
+        print "Deleting dataset"
+        shutil.rmtree(global_path + dataset)
+        print "Deleting cascade file"
+        os.remove(global_path + "cascade.xml")
+        end_time = time.time()
+        print "End Time::" + str(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
+        print "Total Time::" + str(end_time - start_time)
+
 if __name__ == "__main__":
     print "Starting executor"
     driver = mesos.native.MesosExecutorDriver(MyExecutor())
     sys.exit(0 if driver.run() == mesos_pb2.DRIVER_STOPPED else 1)
+
+
+
