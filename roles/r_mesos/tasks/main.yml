@@ -1,2 +1,26 @@
 ---
 # tasks file for r_mesos
+    - name: remove earlier version
+      shell: sudo rm -rf ./*
+    - name: download meso
+      shell: wget http://www.apache.org/dist/mesos/1.2.0/mesos-1.2.0.tar.gz
+    - name: unzip mesos
+      shell: tar -zxf mesos-1.2.0.tar.gz
+    - name: Update the packages
+      shell: sudo apt-get update
+    - name: Install a few utility tools
+      shell: sudo apt-get install -y tar wget git
+    - name: Install the latest OpenJDK
+      shell: sudo apt-get install -y openjdk-7-jdk
+    - name: Install other Mesos dependencies
+      shell: sudo apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev
+    - name: Make build directory
+      shell: mkdir {{build_dir}}
+    - name: Go to build directory adn execute configure
+      command: chdir={{build_dir}} {{build_dir}}/../configure
+    - name: Run make command 
+      command: chdir={{build_dir}} make 
+    - name: Run test suite
+      command: chdir={{build_dir}} check
+    - name: Run make install
+      command: chdir={{build_dir}} install
