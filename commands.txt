@@ -1,0 +1,55 @@
+emacs ~/.cloudmesh/cloudmesh.yaml
+change image name to CC-Ubuntu16.04-20160610 and flavor medium
+local:
+cm secgroup add mesos-secgroup rule1 5050 5050 tcp 0.0.0.0/0
+cm secgroup add mesos-secgroup rule2 5050 5051 tcp 0.0.0.0/0
+cm secgroup add mesos-secgroup rule3 5051 5051 tcp 0.0.0.0/0
+cm secgroup add mesos-secgroup rule4 1 65535 tcp 0.0.0.0/0
+cm secgroup upload mesos-secgroup --cloud=chameleon
+cm cluster define --count 3 --secgroup=mesos-secgroupcm cluster define --count 3 --secgroup=mesos-secgroup --flavor=m1.medium --image=CC-Ubuntu16.04-20161214
+cm cluster avail
+cm cluster use cluster-001
+cm cluster allocate
+cm cluster nodes
+cm vm ssh jainanur-010
+
+1-1 scp ~/cloudmesh/cloudmesh.mesos/create-swap.sh cc@129.114.33.134:/home/cc/
+1-2 scp ~/cloudmesh/cloudmesh.mesos/mesos-deploy_1604.sh cc@129.114.33.134:/home/cc/
+
+cd /home/anurag/Downloads/fd/A/
+sudo chmod 777 *
+scp ./* cc@129.114.33.47:/home/cc/mesos-1.2.0/src/examples/python/
+
+cd /home/anurag/Downloads/fd/B/
+sudo chmod 777 *
+scp ./* cc@129.114.33.47:/home/cc/mesos-1.2.0/build/src/examples/python/
+
+---------------
+jainanur-010 129.114.33.47
+jainanur-011 129.114.32.251
+jainanur-012 129.114.33.134
+---------------
+
+vm:
+
+sudo apt-get update
+sudo apt-get install python-pip
+sudo pip install --upgrade pip
+sudo pip install numpy
+sudo pip install opencv-python
+sudo vim /etc/hosts -> add line "127.0.0.1 localhost jainanur-011"
+1-3 create-swap.sh
+1-4 mesos-deploy_1604.sh
+
+master:
+2-1. sudo ./bin/mesos-master.sh --advertise_ip=129.114.33.47 --work_dir=/var/lib/mesos/
+2-3 cd /home/cc/mesos-1.2.0/build/
+2-4 sudo ./src/examples/python/face_detection-framework 129.114.33.47:5050
+
+agent:
+2-2. sudo ./bin/mesos-agent.sh --advertise_ip=129.114.32.251 --master=129.114.33.47:5050 --work_dir=/var/lib/mesos
+
+
+
+
+
