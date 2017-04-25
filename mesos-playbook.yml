@@ -1,5 +1,6 @@
 ---
 - hosts: mesos-master mesos-agents
+  become: true
   remote_user: cc
   roles:
    - r_mesos
