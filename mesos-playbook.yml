@@ -3,4 +3,5 @@
   become: true
   remote_user: cc
   roles:
+   - create-swap
    - r_mesos

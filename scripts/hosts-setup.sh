@@ -11,11 +11,12 @@ while read line; do
 done <ip_list
 sed -i 's/$/ ansible_ssh_user=cc/' ip_list
 #sed -i 's/$/ ansible_ssh_private_key="\/home\/ronak\/.ssh\/rsa_id.pem"/' ip_list
-echo [mesos-master]|cat > inventory
-head -n2 -q ip_list | tail -n1 >> inventory 
-echo [mesos-agents]|cat >> inventory
-head -n1 -q ip_list >> inventory 
-tail -n1 -q ip_list >> inventory 
+echo [mesos-master]|cat > inventory.txt
+head -n2 -q ip_list | tail -n1 >> inventory.txt 
+echo [mesos-agents]|cat >> inventory.txt
+head -n1 -q ip_list >> inventory.txt
+tail -n1 -q ip_list >> inventory.txt
+mv inventory.txt ~/github/cloudmesh-mesos/inventory.txt
 rm ip_list
 rm avail.txt
 rm avail1.txt

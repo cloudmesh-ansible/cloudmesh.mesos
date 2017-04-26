@@ -11,9 +11,15 @@
     - name: Install a few utility tools
       shell: sudo apt-get install -y tar wget git
     - name: Install the latest OpenJDK
-      shell: sudo apt-get install -y openjdk-7-jdk
+      shell: sudo apt-get install -y openjdk-8-jdk
     - name: Install other Mesos dependencies
-      shell: sudo apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev
+      shell: sudo apt-get -y install build-essential python-dev python-virtualenv libcurl4-nss-dev libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev python-pip zlib1g-dev
+    - name: Update pip
+      shell: sudo pip install --upgrade pip
+    - name: Install numpy
+      shell: sudo pip install numpy
+    - name: Install OpenCV
+      shell: sudo pip install opencv-python
     - name: Make build directory
       shell: mkdir {{build_dir}}
     - name: Go to build directory adn execute configure
