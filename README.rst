@@ -21,5 +21,5 @@
 
 #### STEP 5: Start deployment
 
-    ansible-playbook mesos-playbook.yml -i inventory
+    ./scripts/deploy-mesos.sh
     
