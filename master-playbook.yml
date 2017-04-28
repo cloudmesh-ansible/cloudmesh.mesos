@@ -1,0 +1,9 @@
+---
+- hosts: mesos-master
+  become: true
+  remote_user: cc
+  vars:
+    build_dir: /home/cc/mesos-1.2.0/build/
+  roles:
+   - r_master
+

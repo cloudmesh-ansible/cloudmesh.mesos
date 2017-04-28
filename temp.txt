@@ -1,0 +1,17 @@
+latest ok: [129.114.32.181]
+ok: [129.114.32.19]
+ok: [129.114.32.170]
+
+usse pehele
+ok: [129.114.33.158]
+ok: [129.114.32.173]
+ok: [129.114.110.47]
+
+
+    - name: Run make command 
+      command: chdir={{build_dir}} sudo make 
+    - name: Run test suite
+      command: chdir={{build_dir}} sudo make check
+    - name: Run make install
+      command: chdir={{build_dir}} sudo make install
+
