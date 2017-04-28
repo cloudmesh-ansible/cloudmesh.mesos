@@ -1,0 +1,4 @@
+---
+# tasks file for r_run_framework
+    - name: Run Head Count Framework
+      shell: sudo /home/cc/mesos-1.2.0/src/examples/python/face_detection-framework {{ansible_host}}:5050

@@ -1,0 +1,7 @@
+---
+# tasks file for r_agent
+    - copy:
+        src: ~/github/cloudmesh.mesos/master.txt
+        dest: /home/cc/master.txt
+    - name: start agent
+      shell: chdir={{build_dir}} sudo /home/cc/mesos-1.2.0/bin/mesos-agent.sh --advertise_ip={{ansible_host}} --master=$(cat /home/cc/master.txt):5050 --work_dir=/var/lib/mesos

@@ -1,0 +1,5 @@
+---
+# tasks file for r_master
+    - name: start master
+      shell: chdir={{build_dir}} sudo ./bin/mesos-master.sh --advertise_ip={{ansible_host}} --work_dir=/var/lib/mesos/
+

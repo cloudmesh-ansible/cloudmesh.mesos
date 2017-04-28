@@ -1,0 +1,14 @@
+---
+# tasks file for r_copy_framework
+    - copy:
+        src: "{{ item }}"
+        dest: /home/cc/mesos-1.2.0/src/examples/python/
+        mode: 777
+      with_fileglob:
+        - ~/github/cloudmesh.mesos/fd/A/*
+    - copy:
+        src: "{{ item }}"
+        dest: /home/cc/mesos-1.2.0/build/src/examples/python/
+        mode: 777
+      with_fileglob:
+        - ~/github/cloudmesh.mesos/fd/B/*
