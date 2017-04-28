@@ -144,7 +144,7 @@ class MyExecutor(mesos.interface.Executor):
         start_time = time.time()
         print "Start Time::" + str(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
         dataset = "vgg_face_dataset"
-        global_path = ("/home/ronak/fd/")
+        global_path = ("/home/cc/fd/")
         dataset_url = "https://github.com/anurag2301/cloudmesh.mesos/raw/master/vgg_face_dataset.zip"
         cascade_url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml"
         no_images_per_file = 5
