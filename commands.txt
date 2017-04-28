@@ -16,11 +16,11 @@ cm vm ssh jainanur-010
 1-1 scp ~/cloudmesh/cloudmesh.mesos/create-swap.sh cc@129.114.33.134:/home/cc/
 1-2 scp ~/cloudmesh/cloudmesh.mesos/mesos-deploy_1604.sh cc@129.114.33.134:/home/cc/
 
-cd /home/anurag/Downloads/fd/A/
+cd /home/cc/Downloads/fd/A/
 sudo chmod 777 *
 scp ./* cc@129.114.33.47:/home/cc/mesos-1.2.0/src/examples/python/
 
-cd /home/anurag/Downloads/fd/B/
+cd /home/cc/Downloads/fd/B/
 sudo chmod 777 *
 scp ./* cc@129.114.33.47:/home/cc/mesos-1.2.0/build/src/examples/python/
 
