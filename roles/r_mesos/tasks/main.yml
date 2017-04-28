@@ -25,8 +25,8 @@
     - name: Go to build directory adn execute configure
       command: chdir={{build_dir}} {{build_dir}}/../configure
     - name: Run make command 
-      command: chdir={{build_dir}} make 
+      command: chdir={{build_dir}} sudo make 
     - name: Run test suite
-      command: chdir={{build_dir}} check
+      command: chdir={{build_dir}} sudo make check
     - name: Run make install
-      command: chdir={{build_dir}} install
+      command: chdir={{build_dir}} sudo make install

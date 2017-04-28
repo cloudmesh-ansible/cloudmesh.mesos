@@ -1,13 +1,13 @@
 ---
 # tasks file for swap
     - name: setup hosts file
-      shell: sed "/127.0.0.1/s/$/ $HOSTNAME/" /etc/hosts | sudo tee -a /etc/hosts
+      shell: sed "/127.0.0.1/s/$/ {{ansible_hostname}}/" /etc/hosts | head -n1 | sudo tee -a /etc/hosts
     - name: Alocate swap file
-      shell: sudo fallocate -l 2G /mnt/2GB.swap
+      shell: sudo fallocate -l 5G /mnt/5GB.swap
     - name: Make Swap
-      shell: sudo mkswap /mnt/2GB.swap
+      shell: sudo mkswap /mnt/5GB.swap
     - name: Swapon
-      shell: sudo swapon /mnt/2GB.swap
+      shell: sudo swapon /mnt/5GB.swap
     - name: add swap to conf
       shell: sudo /bin/su -c "echo vm.swappiness=10 >> /etc/sysctl.conf"
     - name: validate swap
