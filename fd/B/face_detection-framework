@@ -2,8 +2,8 @@
 
 # This script uses MESOS_SOURCE_DIR and MESOS_BUILD_DIR which come
 # from configuration substitutions.
-MESOS_SOURCE_DIR=/home/ronak/mesos-1.2.0/build/..
-MESOS_BUILD_DIR=/home/ronak/mesos-1.2.0/build
+MESOS_SOURCE_DIR=/home/cc/mesos-1.2.0/build/..
+MESOS_BUILD_DIR=/home/cc/mesos-1.2.0/build
 
 # Use colors for errors.
 . ${MESOS_SOURCE_DIR}/support/colors.sh
