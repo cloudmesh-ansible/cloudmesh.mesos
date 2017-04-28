@@ -1,0 +1,4 @@
+---
+# tasks file for inventory
+    - name: Create inventory file
+      shell: sh ~/github/cloudmesh.mesos/scripts/hosts-setup.sh
