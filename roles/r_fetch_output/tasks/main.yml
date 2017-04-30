@@ -1,0 +1,6 @@
+---
+- fetch:
+    src: /fd/output/{{ item }}
+    dest: ~/github/cloudmesh.mesos/output/
+  with_items:
+    - /fd/output/*
