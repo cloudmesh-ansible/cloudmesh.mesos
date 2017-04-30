@@ -31,6 +31,7 @@
 #### STEP 6: ssh into each VM and run the following commands from the '~/mesos-1.2.0/build/' directory
 
     sudo make
+    
     sudo make check -j 2 V=0
     
 
