@@ -18,8 +18,19 @@
     
     Preferably all tcp and icmp ports should be open
     
-    (In this deployment secgroup named mesos-secgroup is used but it can be changed in the scripts/create-cluster.sh)
+    (In this deployment, a secgroup named mesos-secgroup is used. It can be changed as required in the scripts/create-cluster.sh)
+
 #### STEP 4: Start deployment
 
     ./scripts/deploy-mesos.sh
+
+#### STEP 5: Get the IP addresses of the nodes of the deployed cluster
+
+    cm cluster nodes
     
+#### STEP 6: ssh into each VM and run the following commands from the '~/mesos-1.2.0/build/' directory
+
+    sudo make
+    sudo make check -j 2 V=0
+    
+
