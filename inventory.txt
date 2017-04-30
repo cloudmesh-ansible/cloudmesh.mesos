@@ -1,5 +1,0 @@
-[mesos-master]
-129.114.110.47 ansible_ssh_user=cc
-[mesos-agents]
-129.114.33.158 ansible_ssh_user=cc
-129.114.32.173 ansible_ssh_user=cc

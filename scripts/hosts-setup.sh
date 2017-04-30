@@ -15,8 +15,12 @@ sed -i 's/$/ ansible_ssh_user=cc/' ip_list
 echo [mesos-master]|cat > inventory.txt
 head -n2 -q ip_list | tail -n1 >> inventory.txt 
 echo [mesos-agents]|cat >> inventory.txt
+echo [mesos-agents]|cat > agent1.txt
+echo [mesos-agents]|cat > agent2.txt
 head -n1 -q ip_list >> inventory.txt
 tail -n1 -q ip_list >> inventory.txt
+tail -n1 ip_list >> agent2.txt 
+head -n1 ip_list >> agent1.txt
 mv inventory.txt ~/github/cloudmesh-mesos/inventory.txt
 rm ip_list
 rm avail.txt
