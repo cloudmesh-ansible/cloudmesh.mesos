@@ -50,6 +50,14 @@
 #### STEP 8: On a seperate terminal - Run framework
 
     ./scripts/run-framework.sh
+    
+#### STEP 9: Fetch output after execution completes (This can be seen on the UI: 'http://<MasterIP>:5050')
+
+MasterIP is the second ip in the list given by 'cm cluster nodes'
+
+    Fetching the output: ./scripts/fetch-output.sh
+
+
 
 We have also created a script to delete all the existing clusters
 
