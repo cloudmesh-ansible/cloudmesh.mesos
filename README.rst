@@ -49,3 +49,9 @@
 #### STEP 8: Run framework
 
     ./scripts/run-framework.sh
+
+
+
+We have also created a script to delete all the existing clusters
+
+./scripts/remove-all-clusters.sh
