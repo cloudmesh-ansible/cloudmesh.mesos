@@ -28,10 +28,24 @@
 
     cm cluster nodes
     
-#### STEP 6: ssh into each VM and run the following commands from the '~/mesos-1.2.0/build/' directory
+#### STEP 6: ssh into each VM and run the following commands from the '~/mesos-1.2.0/build/' directory for each VM
 
     sudo make
     
     sudo make check -j 2 V=0
     
+#### STEP 7: Run mesos-master
 
+    ./scripts/run-master.sh
+        
+#### STEP 8: Run agent 1
+
+    ./scripts/run-agent1.sh
+    
+#### STEP 7: Run agent 2
+
+    ./scripts/run-agent2.sh
+    
+#### STEP 8: Run framework
+
+    ./scripts/run-framework.sh
