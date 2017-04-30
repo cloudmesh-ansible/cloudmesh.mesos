@@ -7,6 +7,7 @@
 #### STEP 2: Install & configure Ansible and Cloudmesh Client using their respective documentations
     
     http://docs.ansible.com/ansible/intro_installation.html  
+    
     http://cloudmesh.github.io/client/installation.html
 
 #### STEP 3: Create a secgroup with the following ports open
