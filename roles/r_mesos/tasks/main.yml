@@ -22,6 +22,6 @@
       shell: sudo pip install opencv-python
     - name: Make build directory
       shell: mkdir {{build_dir}}
-    - name: Go to build directory adn execute configure
+    - name: Go to build directory and execute configure
       command: chdir={{build_dir}} {{build_dir}}/../configure
 
