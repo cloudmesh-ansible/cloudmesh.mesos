@@ -5,6 +5,7 @@
     git clone https://github.com/cloudmesh/cloudmesh.mesos.git 
 
 #### STEP 2: Install & configure Ansible and Cloudmesh Client using their respective documentations
+    
     http://docs.ansible.com/ansible/intro_installation.html  
     http://cloudmesh.github.io/client/installation.html
 
@@ -34,23 +35,21 @@
     
     sudo make check -j 2 V=0
     
-#### STEP 7: Run mesos-master
+#### STEP 7: On a seperate terminal - Run mesos-master
 
     ./scripts/run-master.sh
         
-#### STEP 8: Run agent 1
+#### STEP 8: On a seperate terminal - Run agent 1
 
     ./scripts/run-agent1.sh
     
-#### STEP 7: Run agent 2
+#### STEP 7: On a seperate terminal - Run agent 2
 
     ./scripts/run-agent2.sh
     
-#### STEP 8: Run framework
+#### STEP 8: On a seperate terminal - Run framework
 
     ./scripts/run-framework.sh
-
-
 
 We have also created a script to delete all the existing clusters
 
