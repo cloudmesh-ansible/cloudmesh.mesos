@@ -14,12 +14,9 @@
     5051 - required for agents  
     80, 443, 22 - for HTTP, HTTPS and SSH respectively  
     Preferably all tcp and icmp ports should be open  
+    (In this deployment secgroup named mesos-secgroup is used but it can be changed in the scripts/create-cluster.sh)
 
-#### STEP 4: Create a cluster using cloudmesh client using the created secgroup, 3 nodes, required flavor and Ubuntu 16.04 image
-
-    https://cloudmesh.github.io/classes/lesson/devops/hadoop.html#create-cluster
-
-#### STEP 5: Start deployment
+#### STEP 4: Start deployment
 
     ./scripts/deploy-mesos.sh
     
