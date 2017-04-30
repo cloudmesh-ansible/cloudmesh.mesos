@@ -35,6 +35,8 @@
     
     sudo make check -j 2 V=0
     
+    (Both this commands take 30-50 minutes each)
+    
 #### STEP 7: On a seperate terminal - Run mesos-master
 
     ./scripts/run-master.sh
